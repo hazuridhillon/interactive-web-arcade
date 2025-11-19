@@ -34,6 +34,10 @@ All colors MUST be HSL.
     /* Sage green accent */
     --accent: 82 26% 77%; /* #C9D5B5 */
     --accent-foreground: 340 30% 40%;
+    
+    /* Rose mauve */
+    --rose-mauve: 0 17% 63%; /* #B88B8B */
+    --rose-mauve-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
@@ -48,6 +52,8 @@ All colors MUST be HSL.
     --gradient-dreamy: linear-gradient(135deg, hsl(349 100% 85%), hsl(350 100% 88%), hsl(240 67% 94%));
     --gradient-peach: linear-gradient(135deg, hsl(28 100% 87%), hsl(349 100% 85%));
     --gradient-sage: linear-gradient(135deg, hsl(82 26% 77%), hsl(240 67% 94%));
+    --gradient-garden: linear-gradient(135deg, hsl(82 26% 77%), hsl(120 20% 85%), hsl(100 25% 80%));
+    --gradient-caterpillar: linear-gradient(135deg, hsl(82 26% 77%), hsl(120 30% 70%), hsl(82 26% 77%));
     
     /* Shadows with soft glow */
     --shadow-soft: 0 8px 32px -8px hsl(349 100% 85% / 0.3);
