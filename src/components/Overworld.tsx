@@ -3,6 +3,11 @@ import { Character } from "./Character";
 import { GameStation } from "./GameStation";
 import { FloatingParticles } from "./FloatingParticles";
 import { SnakeGame } from "./games/SnakeGame";
+import { Match3Game } from "./games/Match3Game";
+import { WordleGame } from "./games/WordleGame";
+import { MemoryGame } from "./games/MemoryGame";
+import { GemMatchGame } from "./games/GemMatchGame";
+import { BattleGame } from "./games/BattleGame";
 
 interface Position {
   x: number;
@@ -23,7 +28,7 @@ const STATIONS: Station[] = [
   { id: "match3", name: "Tile Match-3", position: { x: 500, y: 150 }, color: "secondary" },
   { id: "wordle", name: "Wordle", position: { x: 350, y: 300 }, color: "accent" },
   { id: "memory", name: "Memory Cards", position: { x: 200, y: 450 }, color: "muted" },
-  { id: "gem", name: "Gem Match", position: { x: 500, y: 450 }, color: "primary" },
+  { id: "gems", name: "Gem Match", position: { x: 500, y: 450 }, color: "primary" },
   { id: "battle", name: "Battle Game", position: { x: 650, y: 300 }, color: "secondary" },
 ];
 
@@ -117,6 +122,21 @@ export const Overworld = () => {
 
   if (activeGame === "snake") {
     return <SnakeGame onClose={handleCloseGame} />;
+  }
+  if (activeGame === "match3") {
+    return <Match3Game onClose={handleCloseGame} />;
+  }
+  if (activeGame === "wordle") {
+    return <WordleGame onClose={handleCloseGame} />;
+  }
+  if (activeGame === "memory") {
+    return <MemoryGame onClose={handleCloseGame} />;
+  }
+  if (activeGame === "gems") {
+    return <GemMatchGame onClose={handleCloseGame} />;
+  }
+  if (activeGame === "battle") {
+    return <BattleGame onClose={handleCloseGame} />;
   }
 
   const currentStation = STATIONS.find((s) => s.id === nearStation);
