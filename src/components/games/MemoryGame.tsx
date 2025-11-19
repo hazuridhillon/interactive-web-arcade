@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { X, Sparkles, Flower2, Moon, Sun, Star, Gem, Heart, Leaf } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { DifficultySelector } from '@/components/DifficultySelector';
 
 interface Card {
   id: number;
@@ -25,29 +26,58 @@ const CARD_TYPES = [
 ];
 
 export const MemoryGame = ({ onClose }: MemoryGameProps) => {
+  const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard' | null>(null);
   const [cards, setCards] = useState<Card[]>([]);
   const [flippedIndices, setFlippedIndices] = useState<number[]>([]);
   const [moves, setMoves] = useState(0);
   const [matches, setMatches] = useState(0);
   const [gameOver, setGameOver] = useState(false);
+  const [flipDelay, setFlipDelay] = useState(1000);
+  const [numPairs, setNumPairs] = useState(8);
 
   useEffect(() => {
-    initializeGame();
-  }, []);
+    if (difficulty) {
+      initializeGame();
+    }
+  }, [difficulty]);
+
+  const fisherYatesShuffle = <T,>(array: T[]): T[] => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
 
   const initializeGame = () => {
-    const cardPairs = CARD_TYPES.flatMap((_, index) => [
+    const pairsToUse = CARD_TYPES.slice(0, numPairs);
+    const cardPairs = pairsToUse.flatMap((_, index) => [
       { id: index * 2, type: index, flipped: false, matched: false },
       { id: index * 2 + 1, type: index, flipped: false, matched: false },
     ]);
     
-    // Shuffle cards
-    const shuffled = cardPairs.sort(() => Math.random() - 0.5);
+    // Proper Fisher-Yates shuffle
+    const shuffled = fisherYatesShuffle(cardPairs);
     setCards(shuffled);
     setFlippedIndices([]);
     setMoves(0);
     setMatches(0);
     setGameOver(false);
+  };
+
+  const handleDifficultySelect = (diff: 'easy' | 'medium' | 'hard') => {
+    if (diff === 'easy') {
+      setNumPairs(4);
+      setFlipDelay(1200);
+    } else if (diff === 'medium') {
+      setNumPairs(6);
+      setFlipDelay(1000);
+    } else {
+      setNumPairs(8);
+      setFlipDelay(700);
+    }
+    setDifficulty(diff);
   };
 
   const handleCardClick = (index: number) => {
@@ -82,7 +112,7 @@ export const MemoryGame = ({ onClose }: MemoryGameProps) => {
           const newMatches = matches + 1;
           setMatches(newMatches);
           
-          if (newMatches === CARD_TYPES.length) {
+          if (newMatches === numPairs) {
             setTimeout(() => setGameOver(true), 500);
           }
         }, 600);
@@ -94,10 +124,22 @@ export const MemoryGame = ({ onClose }: MemoryGameProps) => {
           resetCards[second].flipped = false;
           setCards(resetCards);
           setFlippedIndices([]);
-        }, 1000);
+        }, flipDelay);
       }
     }
   };
+
+  if (!difficulty) {
+    return (
+      <DifficultySelector
+        onSelect={handleDifficultySelect}
+        onCancel={onClose}
+        easyDesc="8 cards (4 pairs), 1.2s delay"
+        mediumDesc="12 cards (6 pairs), 1.0s delay"
+        hardDesc="16 cards (8 pairs), 0.7s delay"
+      />
+    );
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-[#F5E6D3] via-[#FFF4F0] to-[#E8D5C4] overflow-hidden">
@@ -129,7 +171,7 @@ export const MemoryGame = ({ onClose }: MemoryGameProps) => {
                 <span className="font-bold text-[#8B4513]">Moves: {moves}</span>
               </div>
               <div className="glass-effect px-4 py-2 rounded-full border-2 border-[#8B4513]/30">
-                <span className="font-bold text-[#8B4513]">Pairs: {matches}/{CARD_TYPES.length}</span>
+                <span className="font-bold text-[#8B4513]">Pairs: {matches}/{numPairs}</span>
               </div>
             </div>
           </div>
@@ -144,7 +186,9 @@ export const MemoryGame = ({ onClose }: MemoryGameProps) => {
         </div>
 
         {/* Cards Grid */}
-        <div className="grid grid-cols-4 gap-4 mb-4">
+        <div className={`grid gap-4 mb-4 ${
+          numPairs === 4 ? 'grid-cols-4' : numPairs === 6 ? 'grid-cols-4' : 'grid-cols-4'
+        }`}>
           {cards.map((card, index) => {
             const CardIcon = CARD_TYPES[card.type].icon;
             const cardColor = CARD_TYPES[card.type].color;

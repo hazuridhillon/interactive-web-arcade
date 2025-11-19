@@ -3,11 +3,11 @@ import { Character } from "./Character";
 import { GameStation } from "./GameStation";
 import { FloatingParticles } from "./FloatingParticles";
 import { SnakeGame } from "./games/SnakeGame";
-import { Match3Game } from "./games/Match3Game";
+import { Match3Game } from "./games/Match3GameEnhanced";
 import { WordleGame } from "./games/WordleGame";
 import { MemoryGame } from "./games/MemoryGame";
 import { GemMatchGame } from "./games/GemMatchGame";
-import { BattleGame } from "./games/BattleGame";
+import { BattleGame } from "./games/BattleGameEnhanced";
 
 interface Position {
   x: number;
@@ -142,7 +142,30 @@ export const Overworld = () => {
   const currentStation = STATIONS.find((s) => s.id === nearStation);
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-gradient-to-br from-background via-muted/30 to-accent/20">
+    <div className="relative w-full h-screen overflow-hidden bg-gradient-to-br from-[#FFF4F0] via-[#E6E6FA] to-[#C9D5B5]">
+      {/* Sky with gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#C9D5B5]/30 via-[#E6E6FA]/20 to-transparent" />
+      
+      {/* Floating clouds */}
+      <div className="absolute top-20 left-20 animate-float-slow">
+        <div className="text-6xl opacity-70">☁️</div>
+      </div>
+      <div className="absolute top-32 right-32 animate-float-slower">
+        <div className="text-5xl opacity-60">☁️</div>
+      </div>
+      <div className="absolute top-48 left-1/2 animate-float-slow" style={{ animationDelay: '2s' }}>
+        <div className="text-4xl opacity-50">☁️</div>
+      </div>
+      
+      {/* Twinkling stars */}
+      <div className="absolute top-10 left-10 animate-twinkle text-2xl">✨</div>
+      <div className="absolute top-16 right-20 animate-twinkle text-xl" style={{ animationDelay: '1s' }}>⭐</div>
+      <div className="absolute top-40 right-40 animate-twinkle text-2xl" style={{ animationDelay: '2s' }}>✨</div>
+      <div className="absolute top-24 left-1/3 animate-twinkle text-xl" style={{ animationDelay: '1.5s' }}>⭐</div>
+      
+      {/* Dreamy fog */}
+      <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-white/40 to-transparent" />
+      
       <FloatingParticles />
       
       {/* Animated background blobs */}
@@ -151,7 +174,16 @@ export const Overworld = () => {
       <div className="absolute bottom-1/4 left-1/2 w-96 h-96 bg-accent/20 rounded-full blur-3xl animate-blob" style={{ animationDelay: "4s" }} />
 
       {/* Game container */}
-      <div className="relative w-[800px] h-[600px] mx-auto mt-12 glass-effect rounded-3xl glow-soft overflow-hidden">
+      <div className="relative w-[800px] h-[600px] mx-auto mt-12 glass-effect rounded-3xl glow-soft overflow-hidden border-2 border-white/50">
+        {/* Ground pattern */}
+        <div 
+          className="absolute inset-0 opacity-10"
+          style={{
+            backgroundImage: `repeating-linear-gradient(0deg, #C9D5B5 0px, #C9D5B5 2px, transparent 2px, transparent 30px),
+                             repeating-linear-gradient(90deg, #C9D5B5 0px, #C9D5B5 2px, transparent 2px, transparent 30px)`,
+          }}
+        />
+        
         {STATIONS.map((station) => (
           <GameStation
             key={station.id}
@@ -165,8 +197,8 @@ export const Overworld = () => {
         <Character position={characterPos} isMoving={keys.size > 0} />
         
         {currentStation && (
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 glass-effect px-6 py-3 rounded-full glow-soft animate-bounce-subtle">
-            <p className="text-sm font-medium text-foreground">
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 glass-effect px-6 py-3 rounded-full glow-soft animate-bounce-subtle border-2 border-primary/30">
+            <p className="text-sm font-medium text-foreground drop-shadow-sm">
               Press <span className="font-bold text-primary">SPACE</span> to play {currentStation.name}
             </p>
           </div>
@@ -174,8 +206,8 @@ export const Overworld = () => {
       </div>
 
       {/* Instructions */}
-      <div className="absolute top-8 left-1/2 -translate-x-1/2 glass-effect px-6 py-3 rounded-full glow-soft">
-        <p className="text-sm font-medium text-foreground">
+      <div className="absolute top-8 left-1/2 -translate-x-1/2 glass-effect px-6 py-3 rounded-full glow-soft border-2 border-white/50">
+        <p className="text-sm font-medium text-foreground drop-shadow-sm">
           Use <span className="font-bold text-primary">Arrow Keys</span> or <span className="font-bold text-primary">WASD</span> to move
         </p>
       </div>

@@ -120,7 +120,7 @@ export const GemMatchGame = ({ onClose }: GemMatchGameProps) => {
         if (newGrid[y][x].matched) {
           emptySpaces++;
         } else if (emptySpaces > 0) {
-          newGrid[y + emptySpaces][x] = { ...newGrid[y][x], y: y + emptySpaces };
+          newGrid[y + emptySpaces][x] = { ...newGrid[y][x], y: y + emptySpaces, matched: false };
           newGrid[y][x] = createTile(x, y);
         }
       }
@@ -131,7 +131,11 @@ export const GemMatchGame = ({ onClose }: GemMatchGameProps) => {
     }
     
     setGrid(newGrid);
-    setTimeout(() => checkMatches(newGrid), 300);
+    setTimeout(() => {
+      if (!checkMatches(newGrid)) {
+        // Cascade finished
+      }
+    }, 300);
   };
 
   const handleTileClick = (x: number, y: number) => {
