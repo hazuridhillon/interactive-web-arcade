@@ -155,4 +155,115 @@ All colors MUST be HSL.
   .gradient-sage {
     background: var(--gradient-sage);
   }
+  
+  /* Animations */
+  @keyframes float-slow {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+  
+  @keyframes float-slower {
+    0%, 100% {
+      transform: translateY(0px) translateX(0px);
+    }
+    50% {
+      transform: translateY(-15px) translateX(10px);
+    }
+  }
+  
+  @keyframes twinkle {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.3;
+      transform: scale(0.8);
+    }
+  }
+  
+  @keyframes breathing {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.02);
+    }
+  }
+  
+  @keyframes blink {
+    0%, 90%, 100% {
+      transform: scaleY(1);
+    }
+    95% {
+      transform: scaleY(0.1);
+    }
+  }
+  
+  .animate-float-slow {
+    animation: float-slow 8s ease-in-out infinite;
+  }
+  
+  .animate-float-slower {
+    animation: float-slower 10s ease-in-out infinite;
+  }
+  
+  .animate-twinkle {
+    animation: twinkle 3s ease-in-out infinite;
+  }
+  
+  .animate-breathing {
+    animation: breathing 3s ease-in-out infinite;
+  }
+  
+  .animate-blink {
+    animation: blink 4s ease-in-out infinite;
+  }
+  
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+  }
+  
+  .animate-shake {
+    animation: shake 0.5s ease-in-out;
+  }
+  
+  @keyframes attack-forward {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(50px) scale(1.1); }
+  }
+  
+  @keyframes attack-backward {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(-50px) scale(1.1); }
+  }
+  
+  .animate-attack-forward {
+    animation: attack-forward 0.5s ease-in-out;
+  }
+  
+  .animate-attack-backward {
+    animation: attack-backward 0.5s ease-in-out;
+  }
+  
+  @keyframes damage-float {
+    0% { 
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    100% { 
+      opacity: 0;
+      transform: translateY(-50px) scale(1.5);
+    }
+  }
+  
+  .animate-damage-float {
+    animation: damage-float 1s ease-out forwards;
+  }
 }
