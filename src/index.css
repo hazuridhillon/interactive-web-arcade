@@ -155,115 +155,127 @@ All colors MUST be HSL.
   .gradient-sage {
     background: var(--gradient-sage);
   }
+
+  /* ===== RETRO 2002 STYLES ===== */
+
+  .retro-bg {
+    background-color: #0a0a2e;
+    background-image:
+      radial-gradient(circle, #ffffff 0.5px, transparent 0.5px);
+    background-size: 24px 24px;
+  }
+
+  .neon-glow {
+    text-shadow:
+      0 0 5px #00ffff,
+      0 0 10px #00ffff,
+      0 0 20px #00ffff,
+      0 0 40px #00aaff;
+  }
+
+  .retro-btn {
+    border-radius: 0;
+    cursor: crosshair;
+    image-rendering: pixelated;
+  }
+  .retro-btn:hover {
+    filter: brightness(1.2);
+  }
+
+  .blink-badge {
+    animation: blink-vis 0.6s step-end infinite;
+  }
+
+  .retro-star {
+    position: absolute;
+    color: #ffff00;
+    font-size: 18px;
+    animation: retro-twinkle 0.8s step-end infinite;
+    pointer-events: none;
+  }
+
+  .pixel-bounce {
+    animation: px-bounce 0.5s steps(2) infinite;
+  }
+
+  .retro-marquee {
+    animation: marquee-scroll 12s linear infinite;
+  }
+
+  @keyframes blink-vis {
+    0%, 49% { visibility: visible; }
+    50%, 100% { visibility: hidden; }
+  }
+
+  @keyframes retro-twinkle {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0.2; }
+  }
+
+  @keyframes px-bounce {
+    0%, 49% { transform: translateY(0); }
+    50%, 100% { transform: translateY(-4px); }
+  }
+
+  @keyframes marquee-scroll {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+  }
+
+  /* ===== EXISTING GAME ANIMATIONS ===== */
   
-  /* Animations */
   @keyframes float-slow {
-    0%, 100% {
-      transform: translateY(0px);
-    }
-    50% {
-      transform: translateY(-20px);
-    }
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
   }
   
   @keyframes float-slower {
-    0%, 100% {
-      transform: translateY(0px) translateX(0px);
-    }
-    50% {
-      transform: translateY(-15px) translateX(10px);
-    }
+    0%, 100% { transform: translateY(0px) translateX(0px); }
+    50% { transform: translateY(-15px) translateX(10px); }
   }
   
   @keyframes twinkle {
-    0%, 100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-    50% {
-      opacity: 0.3;
-      transform: scale(0.8);
-    }
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(0.8); }
   }
   
   @keyframes breathing {
-    0%, 100% {
-      transform: scale(1);
-    }
-    50% {
-      transform: scale(1.02);
-    }
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
   }
   
   @keyframes blink {
-    0%, 90%, 100% {
-      transform: scaleY(1);
-    }
-    95% {
-      transform: scaleY(0.1);
-    }
+    0%, 90%, 100% { transform: scaleY(1); }
+    95% { transform: scaleY(0.1); }
   }
   
-  .animate-float-slow {
-    animation: float-slow 8s ease-in-out infinite;
-  }
-  
-  .animate-float-slower {
-    animation: float-slower 10s ease-in-out infinite;
-  }
-  
-  .animate-twinkle {
-    animation: twinkle 3s ease-in-out infinite;
-  }
-  
-  .animate-breathing {
-    animation: breathing 3s ease-in-out infinite;
-  }
-  
-  .animate-blink {
-    animation: blink 4s ease-in-out infinite;
-  }
+  .animate-float-slow { animation: float-slow 8s ease-in-out infinite; }
+  .animate-float-slower { animation: float-slower 10s ease-in-out infinite; }
+  .animate-twinkle { animation: twinkle 3s ease-in-out infinite; }
+  .animate-breathing { animation: breathing 3s ease-in-out infinite; }
+  .animate-blink { animation: blink 4s ease-in-out infinite; }
   
   @keyframes shake {
     0%, 100% { transform: translateX(0); }
     10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
     20%, 40%, 60%, 80% { transform: translateX(5px); }
   }
-  
-  .animate-shake {
-    animation: shake 0.5s ease-in-out;
-  }
+  .animate-shake { animation: shake 0.5s ease-in-out; }
   
   @keyframes attack-forward {
     0%, 100% { transform: translateX(0); }
     50% { transform: translateX(50px) scale(1.1); }
   }
-  
   @keyframes attack-backward {
     0%, 100% { transform: translateX(0); }
     50% { transform: translateX(-50px) scale(1.1); }
   }
-  
-  .animate-attack-forward {
-    animation: attack-forward 0.5s ease-in-out;
-  }
-  
-  .animate-attack-backward {
-    animation: attack-backward 0.5s ease-in-out;
-  }
+  .animate-attack-forward { animation: attack-forward 0.5s ease-in-out; }
+  .animate-attack-backward { animation: attack-backward 0.5s ease-in-out; }
   
   @keyframes damage-float {
-    0% { 
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-    100% { 
-      opacity: 0;
-      transform: translateY(-50px) scale(1.5);
-    }
+    0% { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-50px) scale(1.5); }
   }
-  
-  .animate-damage-float {
-    animation: damage-float 1s ease-out forwards;
-  }
+  .animate-damage-float { animation: damage-float 1s ease-out forwards; }
 }
