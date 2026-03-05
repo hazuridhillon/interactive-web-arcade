@@ -1,7 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
-import { Character } from "./Character";
-import { GameStation } from "./GameStation";
-import { FloatingParticles } from "./FloatingParticles";
+import { useState, useCallback } from "react";
 import { SnakeGame } from "./games/SnakeGame";
 import { Match3Game } from "./games/Match3GameEnhanced";
 import { WordleGame } from "./games/WordleGame";
@@ -9,208 +6,129 @@ import { MemoryGame } from "./games/MemoryGame";
 import { GemMatchGame } from "./games/GemMatchGame";
 import { BattleGame } from "./games/BattleGameEnhanced";
 
-interface Position {
-  x: number;
-  y: number;
-}
-
-type StationColor = "primary" | "secondary" | "accent" | "muted";
-
-interface Station {
+interface GameDef {
   id: string;
   name: string;
-  position: Position;
-  color: StationColor;
+  color: string;
+  borderColor: string;
+  hasNewBadge?: boolean;
 }
 
-const STATIONS: Station[] = [
-  { id: "snake", name: "Snake", position: { x: 200, y: 150 }, color: "primary" },
-  { id: "match3", name: "Tile Match-3", position: { x: 500, y: 150 }, color: "secondary" },
-  { id: "wordle", name: "Wordle", position: { x: 350, y: 300 }, color: "accent" },
-  { id: "memory", name: "Memory Cards", position: { x: 200, y: 450 }, color: "muted" },
-  { id: "gems", name: "Gem Match", position: { x: 500, y: 450 }, color: "primary" },
-  { id: "battle", name: "Battle Game", position: { x: 650, y: 300 }, color: "secondary" },
+const GAMES: GameDef[] = [
+  { id: "snake", name: "SNAKE", color: "#00ff00", borderColor: "#00cc00" },
+  { id: "match3", name: "TILE MATCH", color: "#ff00ff", borderColor: "#cc00cc", hasNewBadge: true },
+  { id: "wordle", name: "WORDLE", color: "#00bfff", borderColor: "#0099cc" },
+  { id: "memory", name: "MEMORY", color: "#ff6600", borderColor: "#cc5200" },
+  { id: "gems", name: "GEM MATCH", color: "#ff0000", borderColor: "#cc0000" },
+  { id: "battle", name: "BATTLE", color: "#ffff00", borderColor: "#cccc00" },
 ];
 
-const MOVE_SPEED = 5;
-const INTERACTION_DISTANCE = 80;
+// Simple pixel mascot as a grid of colored cells
+const MASCOT_PIXELS = [
+  [0,0,1,1,1,0,0,0],
+  [0,1,2,2,2,1,0,0],
+  [0,1,3,2,3,1,0,0],
+  [0,1,2,2,2,1,0,0],
+  [1,1,1,1,1,1,1,0],
+  [0,0,1,4,1,0,0,0],
+  [0,1,1,1,1,1,0,0],
+  [0,1,0,0,0,1,0,0],
+];
+const PIXEL_COLORS: Record<number, string> = {
+  0: "transparent",
+  1: "#00bfff",
+  2: "#ffe0b2",
+  3: "#222",
+  4: "#ff0000",
+};
+
+const PixelMascot = () => (
+  <div className="pixel-bounce inline-block" style={{ imageRendering: "pixelated" }}>
+    <div className="grid" style={{ gridTemplateColumns: "repeat(8, 6px)", gap: 0 }}>
+      {MASCOT_PIXELS.flat().map((c, i) => (
+        <div key={i} style={{ width: 6, height: 6, background: PIXEL_COLORS[c] }} />
+      ))}
+    </div>
+  </div>
+);
 
 export const Overworld = () => {
-  const [characterPos, setCharacterPos] = useState<Position>({ x: 100, y: 100 });
-  const [keys, setKeys] = useState<Set<string>>(new Set());
-  const [nearStation, setNearStation] = useState<string | null>(null);
   const [activeGame, setActiveGame] = useState<string | null>(null);
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      setKeys((prev) => new Set(prev).add(e.key.toLowerCase()));
-    };
+  const handleCloseGame = useCallback(() => setActiveGame(null), []);
 
-    const handleKeyUp = (e: KeyboardEvent) => {
-      setKeys((prev) => {
-        const next = new Set(prev);
-        next.delete(e.key.toLowerCase());
-        return next;
-      });
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("keyup", handleKeyUp);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("keyup", handleKeyUp);
-    };
-  }, []);
-
-  useEffect(() => {
-    const gameLoop = setInterval(() => {
-      setCharacterPos((prev) => {
-        let newX = prev.x;
-        let newY = prev.y;
-
-        if (keys.has("arrowup") || keys.has("w")) newY -= MOVE_SPEED;
-        if (keys.has("arrowdown") || keys.has("s")) newY += MOVE_SPEED;
-        if (keys.has("arrowleft") || keys.has("a")) newX -= MOVE_SPEED;
-        if (keys.has("arrowright") || keys.has("d")) newX += MOVE_SPEED;
-
-        // Keep character in bounds
-        newX = Math.max(40, Math.min(760, newX));
-        newY = Math.max(40, Math.min(560, newY));
-
-        return { x: newX, y: newY };
-      });
-    }, 1000 / 60);
-
-    return () => clearInterval(gameLoop);
-  }, [keys]);
-
-  useEffect(() => {
-    const checkProximity = () => {
-      for (const station of STATIONS) {
-        const distance = Math.sqrt(
-          Math.pow(characterPos.x - station.position.x, 2) +
-            Math.pow(characterPos.y - station.position.y, 2)
-        );
-
-        if (distance < INTERACTION_DISTANCE) {
-          setNearStation(station.id);
-          return;
-        }
-      }
-      setNearStation(null);
-    };
-
-    checkProximity();
-  }, [characterPos]);
-
-  useEffect(() => {
-    const handleSpace = (e: KeyboardEvent) => {
-      if (e.key === " " && nearStation) {
-        e.preventDefault();
-        setActiveGame(nearStation);
-      }
-    };
-
-    window.addEventListener("keydown", handleSpace);
-    return () => window.removeEventListener("keydown", handleSpace);
-  }, [nearStation]);
-
-  const handleCloseGame = useCallback(() => {
-    setActiveGame(null);
-  }, []);
-
-  if (activeGame === "snake") {
-    return <SnakeGame onClose={handleCloseGame} />;
-  }
-  if (activeGame === "match3") {
-    return <Match3Game onClose={handleCloseGame} />;
-  }
-  if (activeGame === "wordle") {
-    return <WordleGame onClose={handleCloseGame} />;
-  }
-  if (activeGame === "memory") {
-    return <MemoryGame onClose={handleCloseGame} />;
-  }
-  if (activeGame === "gems") {
-    return <GemMatchGame onClose={handleCloseGame} />;
-  }
-  if (activeGame === "battle") {
-    return <BattleGame onClose={handleCloseGame} />;
-  }
-
-  const currentStation = STATIONS.find((s) => s.id === nearStation);
+  if (activeGame === "snake") return <SnakeGame onClose={handleCloseGame} />;
+  if (activeGame === "match3") return <Match3Game onClose={handleCloseGame} />;
+  if (activeGame === "wordle") return <WordleGame onClose={handleCloseGame} />;
+  if (activeGame === "memory") return <MemoryGame onClose={handleCloseGame} />;
+  if (activeGame === "gems") return <GemMatchGame onClose={handleCloseGame} />;
+  if (activeGame === "battle") return <BattleGame onClose={handleCloseGame} />;
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-gradient-to-br from-[#FFF4F0] via-[#E6E6FA] to-[#C9D5B5]">
-      {/* Sky with gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#C9D5B5]/30 via-[#E6E6FA]/20 to-transparent" />
-      
-      {/* Floating clouds */}
-      <div className="absolute top-20 left-20 animate-float-slow">
-        <div className="text-6xl opacity-70">☁️</div>
-      </div>
-      <div className="absolute top-32 right-32 animate-float-slower">
-        <div className="text-5xl opacity-60">☁️</div>
-      </div>
-      <div className="absolute top-48 left-1/2 animate-float-slow" style={{ animationDelay: '2s' }}>
-        <div className="text-4xl opacity-50">☁️</div>
-      </div>
-      
-      {/* Twinkling stars */}
-      <div className="absolute top-10 left-10 animate-twinkle text-2xl">✨</div>
-      <div className="absolute top-16 right-20 animate-twinkle text-xl" style={{ animationDelay: '1s' }}>⭐</div>
-      <div className="absolute top-40 right-40 animate-twinkle text-2xl" style={{ animationDelay: '2s' }}>✨</div>
-      <div className="absolute top-24 left-1/3 animate-twinkle text-xl" style={{ animationDelay: '1.5s' }}>⭐</div>
-      
-      {/* Dreamy fog */}
-      <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-white/40 to-transparent" />
-      
-      <FloatingParticles />
-      
-      {/* Animated background blobs */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-blob" />
-      <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-secondary/20 rounded-full blur-3xl animate-blob" style={{ animationDelay: "2s" }} />
-      <div className="absolute bottom-1/4 left-1/2 w-96 h-96 bg-accent/20 rounded-full blur-3xl animate-blob" style={{ animationDelay: "4s" }} />
+    <div className="retro-bg min-h-screen p-4 flex flex-col items-center" style={{ fontFamily: "'Press Start 2P', cursive" }}>
+      {/* Decorative stars */}
+      <span className="retro-star" style={{ top: 30, left: 40 }}>✦</span>
+      <span className="retro-star" style={{ top: 80, right: 60 }}>⚡</span>
+      <span className="retro-star" style={{ bottom: 120, left: 100 }}>★</span>
+      <span className="retro-star" style={{ top: 200, right: 120 }}>✦</span>
 
-      {/* Game container */}
-      <div className="relative w-[800px] h-[600px] mx-auto mt-12 glass-effect rounded-3xl glow-soft overflow-hidden border-2 border-white/50">
-        {/* Ground pattern */}
-        <div 
-          className="absolute inset-0 opacity-10"
-          style={{
-            backgroundImage: `repeating-linear-gradient(0deg, #C9D5B5 0px, #C9D5B5 2px, transparent 2px, transparent 30px),
-                             repeating-linear-gradient(90deg, #C9D5B5 0px, #C9D5B5 2px, transparent 2px, transparent 30px)`,
-          }}
-        />
-        
-        {STATIONS.map((station) => (
-          <GameStation
-            key={station.id}
-            name={station.name}
-            position={station.position}
-            color={station.color}
-            isNear={nearStation === station.id}
-          />
+      {/* Title area */}
+      <div className="flex items-center gap-4 mt-8 mb-2">
+        <PixelMascot />
+        <h1 className="neon-glow text-3xl md:text-5xl tracking-wider" style={{ color: "#00ffff" }}>
+          GAME ZONE
+        </h1>
+        <PixelMascot />
+      </div>
+
+      {/* Marquee */}
+      <div className="w-full max-w-2xl overflow-hidden my-3" style={{ border: "1px solid #00ffff" }}>
+        <div className="retro-marquee whitespace-nowrap text-xs py-1" style={{ color: "#ffff00" }}>
+          ★ Welcome to the ULTIMATE arcade! ★ Play FREE games! ★ Challenge your friends! ★ New games added weekly! ★ You are visitor #00048271 ★
+        </div>
+      </div>
+
+      {/* Game grid */}
+      <div
+        className="grid grid-cols-2 md:grid-cols-3 gap-4 p-4 my-4 max-w-3xl w-full"
+        style={{ border: "2px solid #00ffff" }}
+      >
+        {GAMES.map((game) => (
+          <button
+            key={game.id}
+            onClick={() => setActiveGame(game.id)}
+            className="retro-btn relative text-center py-6 px-4 cursor-pointer active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-none"
+            style={{
+              backgroundColor: game.color,
+              borderColor: game.borderColor,
+              boxShadow: `4px 4px 0px #000`,
+              borderWidth: 4,
+              borderStyle: "outset",
+            }}
+          >
+            <span className="text-xs md:text-sm font-bold drop-shadow-none" style={{ color: "#000", fontFamily: "'Press Start 2P', cursive" }}>
+              {game.name}
+            </span>
+            {game.hasNewBadge && (
+              <span className="blink-badge absolute -top-2 -right-2 text-[8px] px-1 py-0.5" style={{ background: "#ff0000", color: "#fff" }}>
+                NEW!
+              </span>
+            )}
+          </button>
         ))}
-        
-        <Character position={characterPos} isMoving={keys.size > 0} />
-        
-        {currentStation && (
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 glass-effect px-6 py-3 rounded-full glow-soft animate-bounce-subtle border-2 border-primary/30">
-            <p className="text-sm font-medium text-foreground drop-shadow-sm">
-              Press <span className="font-bold text-primary">SPACE</span> to play {currentStation.name}
-            </p>
-          </div>
-        )}
       </div>
 
-      {/* Instructions */}
-      <div className="absolute top-8 left-1/2 -translate-x-1/2 glass-effect px-6 py-3 rounded-full glow-soft border-2 border-white/50">
-        <p className="text-sm font-medium text-foreground drop-shadow-sm">
-          Use <span className="font-bold text-primary">Arrow Keys</span> or <span className="font-bold text-primary">WASD</span> to move
-        </p>
+      {/* Visitor counter */}
+      <div className="my-4 text-[10px]" style={{ color: "#888" }}>
+        <span style={{ border: "1px solid #444", padding: "2px 8px", background: "#111" }}>
+          You are visitor #00048271
+        </span>
       </div>
+
+      {/* Footer */}
+      <footer className="mt-auto pb-4 text-center text-[8px]" style={{ color: "#666" }}>
+        © 2003 GAME ZONE | Best viewed in 800×600 | Internet Explorer 6
+      </footer>
     </div>
   );
 };
