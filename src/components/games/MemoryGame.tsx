@@ -1,3 +1,9 @@
+/**
+ * MemoryGame.tsx — A card-matching memory game.
+ * Flip two cards at a time to find matching pairs.
+ * Difficulty controls number of pairs and flip speed.
+ */
+
 import { useState, useEffect } from 'react';
 import { X, Sparkles, Flower2, Moon, Sun, Star, Gem, Heart, Leaf } from 'lucide-react';
 import { DifficultySelector } from '@/components/DifficultySelector';

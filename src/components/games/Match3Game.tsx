@@ -1,3 +1,9 @@
+/**
+ * Match3Game.tsx — A match-3 tile puzzle (drag-to-swap version).
+ * Drag adjacent tiles to swap them and match 3+ in a row/column.
+ * Difficulty controls tile variety, moves, and optional time limit.
+ */
+
 import { useState, useEffect, useCallback } from 'react';
 import { X, Home } from 'lucide-react';
 import { DifficultySelector } from '@/components/DifficultySelector';

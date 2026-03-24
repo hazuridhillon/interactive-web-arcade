@@ -1,3 +1,10 @@
+/**
+ * BattleGame.tsx — A turn-based RPG battle.
+ * Pick a difficulty, choose an element (nature/water/fire), then trade
+ * attacks with an AI opponent using quick, power, defend, or special moves.
+ * Elements have rock-paper-scissors advantages.
+ */
+
 import React, { useState, useEffect } from 'react';
 import { X, Sword, Shield, Star, Zap, Sparkles, Leaf, Droplet, Flame } from 'lucide-react';
 import { DifficultySelector } from '@/components/DifficultySelector';

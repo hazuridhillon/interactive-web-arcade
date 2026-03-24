@@ -1,3 +1,9 @@
+/**
+ * SnakeGame.tsx — Classic snake game themed as "Secret Garden".
+ * Player controls a snake with arrow keys or WASD to collect pink dewdrops.
+ * Hitting a wall or yourself ends the game.
+ */
+
 import { useEffect, useState, useCallback } from "react";
 import { X, Flower2, Sparkles } from "lucide-react";
 
