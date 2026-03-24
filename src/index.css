@@ -156,70 +156,89 @@ All colors MUST be HSL.
     background: var(--gradient-sage);
   }
 
-  /* ===== RETRO 2002 STYLES ===== */
+  /* ===== Y2K GLAMOUR STYLES ===== */
 
-  .retro-bg {
-    background-color: #0a0a2e;
-    background-image:
-      radial-gradient(circle, #ffffff 0.5px, transparent 0.5px);
-    background-size: 24px 24px;
+  .y2k-bg {
+    background: linear-gradient(135deg, #1a0a1a 0%, #2d0a2d 30%, #1a0a2a 60%, #0d0515 100%);
   }
 
-  .neon-glow {
+  .y2k-chrome-bar {
+    background: linear-gradient(180deg, #ff69b4 0%, #ff1493 50%, #c71585 100%);
+    border-bottom: 3px solid #ffb6c1;
+    box-shadow: 0 4px 20px rgba(255, 20, 147, 0.5);
+  }
+
+  .y2k-title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+    color: white;
     text-shadow:
-      0 0 5px #00ffff,
-      0 0 10px #00ffff,
-      0 0 20px #00ffff,
-      0 0 40px #00aaff;
+      0 0 10px rgba(255, 255, 255, 0.8),
+      0 0 30px rgba(255, 105, 180, 0.6),
+      0 0 60px rgba(255, 20, 147, 0.4);
+    letter-spacing: 0.15em;
   }
 
-  .retro-btn {
-    border-radius: 0;
-    cursor: crosshair;
-    image-rendering: pixelated;
-  }
-  .retro-btn:hover {
-    filter: brightness(1.2);
+  .y2k-subtitle-banner {
+    background: linear-gradient(90deg, transparent, rgba(255, 105, 180, 0.2), transparent);
+    color: #ffb6c1;
+    border-top: 1px solid rgba(255, 182, 193, 0.2);
+    border-bottom: 1px solid rgba(255, 182, 193, 0.2);
   }
 
-  .blink-badge {
-    animation: blink-vis 0.6s step-end infinite;
+  .y2k-card {
+    background: linear-gradient(145deg, rgba(255, 20, 147, 0.35), rgba(139, 0, 139, 0.3));
+    border: 2px solid rgba(255, 105, 180, 0.4);
+    border-radius: 1rem;
+    backdrop-filter: blur(12px);
+    box-shadow:
+      0 8px 32px rgba(255, 20, 147, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
   }
 
-  .retro-star {
-    position: absolute;
-    color: #ffff00;
-    font-size: 18px;
-    animation: retro-twinkle 0.8s step-end infinite;
-    pointer-events: none;
+  .y2k-card-hover {
+    border-color: rgba(255, 182, 193, 0.8);
+    box-shadow:
+      0 8px 40px rgba(255, 20, 147, 0.5),
+      0 0 20px rgba(255, 105, 180, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transform: translateY(-4px) scale(1.03);
   }
 
-  .pixel-bounce {
-    animation: px-bounce 0.5s steps(2) infinite;
+  .y2k-gloss {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, transparent 50%);
   }
 
-  .retro-marquee {
-    animation: marquee-scroll 12s linear infinite;
+  .y2k-sparkle {
+    animation: y2k-sparkle-anim 1.5s ease-in-out infinite;
   }
 
-  @keyframes blink-vis {
-    0%, 49% { visibility: visible; }
-    50%, 100% { visibility: hidden; }
+  .y2k-float {
+    animation: y2k-float-anim 4s ease-in-out infinite;
   }
 
-  @keyframes retro-twinkle {
-    0%, 49% { opacity: 1; }
-    50%, 100% { opacity: 0.2; }
+  .y2k-pulse {
+    animation: y2k-pulse-anim 1.2s ease-in-out infinite;
   }
 
-  @keyframes px-bounce {
-    0%, 49% { transform: translateY(0); }
-    50%, 100% { transform: translateY(-4px); }
+  .y2k-bottom-strip {
+    background: linear-gradient(180deg, transparent, rgba(255, 20, 147, 0.15));
+    border-top: 1px solid rgba(255, 105, 180, 0.15);
   }
 
-  @keyframes marquee-scroll {
-    0% { transform: translateX(100%); }
-    100% { transform: translateX(-100%); }
+  @keyframes y2k-sparkle-anim {
+    0%, 100% { opacity: 0.4; transform: scale(0.8) rotate(0deg); }
+    50% { opacity: 1; transform: scale(1.2) rotate(180deg); }
+  }
+
+  @keyframes y2k-float-anim {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+  }
+
+  @keyframes y2k-pulse-anim {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
   }
 
   /* ===== EXISTING GAME ANIMATIONS ===== */
