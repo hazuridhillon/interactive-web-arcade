@@ -108,7 +108,7 @@ export const Overworld = () => {
           className="text-[10px] tracking-[0.3em] uppercase"
           style={{ fontFamily: "'Poppins', sans-serif", color: "#9b7abf" }}
         >
-          made with love
+          made by hazuri
         </p>
       </footer>
     </div>
