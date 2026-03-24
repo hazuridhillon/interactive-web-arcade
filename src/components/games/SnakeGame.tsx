@@ -5,12 +5,11 @@
  */
 
 import { useEffect, useState, useCallback } from "react";
-import { X, Flower2, Sparkles } from "lucide-react";
+import { Flower2, Sparkles } from "lucide-react";
+import { GameHeader } from "@/components/GameHeader";
+import { GameOverModal } from "@/components/GameOverModal";
 
-interface Position {
-  x: number;
-  y: number;
-}
+interface Position { x: number; y: number; }
 
 const GRID_SIZE = 20;
 const CELL_SIZE = 24;
@@ -32,10 +31,7 @@ export const SnakeGame = ({ onClose }: { onClose: () => void }) => {
   const [score, setScore] = useState(0);
 
   const generateFood = useCallback(() => {
-    setFood({
-      x: Math.floor(Math.random() * GRID_SIZE),
-      y: Math.floor(Math.random() * GRID_SIZE),
-    });
+    setFood({ x: Math.floor(Math.random() * GRID_SIZE), y: Math.floor(Math.random() * GRID_SIZE) });
   }, []);
 
   useEffect(() => {
@@ -79,56 +75,35 @@ export const SnakeGame = ({ onClose }: { onClose: () => void }) => {
       ))}
 
       <div className="relative rounded-[22px] p-6" style={{ backgroundColor: '#fff', boxShadow: '0 6px 0 0 #4cc08a' }}>
-        {/* Header */}
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h2 style={{ fontFamily: "'Bungee', cursive", color: '#1a1040' }} className="text-2xl">Secret Garden</h2>
-            <p style={{ fontFamily: "'Poppins', sans-serif", color: '#9b7abf' }} className="text-xs flex items-center gap-1">
-              <Sparkles className="w-3 h-3" /> Dewdrops: {score}
-            </p>
-          </div>
-          <button onClick={onClose} className="p-2 rounded-full transition-all hover:bg-black/5">
-            <X className="w-5 h-5" style={{ color: '#1a1040' }} />
-          </button>
-        </div>
+        <GameHeader
+          title="Secret Garden"
+          badges={[{ label: <><Sparkles className="w-3 h-3 inline" /> Dewdrops: {score}</>, bg: 'transparent', color: '#9b7abf' }]}
+          onClose={onClose}
+        />
 
         {/* Board */}
         <div
           className="relative rounded-[16px] overflow-hidden"
-          style={{
-            width: GRID_SIZE * CELL_SIZE,
-            height: GRID_SIZE * CELL_SIZE,
-            backgroundColor: '#c8e6c9',
-            border: '3px solid #69f0ae',
-          }}
+          style={{ width: GRID_SIZE * CELL_SIZE, height: GRID_SIZE * CELL_SIZE, backgroundColor: '#c8e6c9', border: '3px solid #69f0ae' }}
         >
-          {/* Grid lines */}
           <div className="absolute inset-0 opacity-15" style={{
             backgroundImage: `repeating-linear-gradient(90deg, #2e7d32 0px, transparent 1px, transparent ${CELL_SIZE}px), repeating-linear-gradient(0deg, #2e7d32 0px, transparent 1px, transparent ${CELL_SIZE}px)`,
           }} />
 
           {/* Food */}
-          <div
-            className="absolute rounded-full"
-            style={{
-              left: food.x * CELL_SIZE + 4, top: food.y * CELL_SIZE + 4,
-              width: CELL_SIZE - 8, height: CELL_SIZE - 8,
-              backgroundColor: '#ff6fcf', boxShadow: '0 0 10px #ff6fcf80',
-            }}
-          />
+          <div className="absolute rounded-full" style={{
+            left: food.x * CELL_SIZE + 4, top: food.y * CELL_SIZE + 4,
+            width: CELL_SIZE - 8, height: CELL_SIZE - 8,
+            backgroundColor: '#ff6fcf', boxShadow: '0 0 10px #ff6fcf80',
+          }} />
 
           {/* Snake */}
           {snake.map((segment, index) => (
-            <div
-              key={index}
-              className="absolute rounded-full transition-all duration-75"
-              style={{
-                left: segment.x * CELL_SIZE + 2, top: segment.y * CELL_SIZE + 2,
-                width: CELL_SIZE - 4, height: CELL_SIZE - 4,
-                backgroundColor: index === 0 ? '#69f0ae' : '#a5d6a7',
-                border: '2px solid #43a047',
-              }}
-            >
+            <div key={index} className="absolute rounded-full transition-all duration-75" style={{
+              left: segment.x * CELL_SIZE + 2, top: segment.y * CELL_SIZE + 2,
+              width: CELL_SIZE - 4, height: CELL_SIZE - 4,
+              backgroundColor: index === 0 ? '#69f0ae' : '#a5d6a7', border: '2px solid #43a047',
+            }}>
               {index === 0 && (
                 <>
                   <div className="absolute rounded-full bg-[#1a1040]" style={{ width: 4, height: 4, top: 4, left: 4 }} />
@@ -138,16 +113,12 @@ export const SnakeGame = ({ onClose }: { onClose: () => void }) => {
             </div>
           ))}
 
-          {/* Game Over */}
+          {/* Game Over inline */}
           {gameOver && (
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-4" style={{ backgroundColor: 'rgba(255,255,255,0.9)' }}>
               <h3 style={{ fontFamily: "'Bungee', cursive", color: '#ff0098' }} className="text-2xl">Game Over!</h3>
               <p style={{ fontFamily: "'Poppins', sans-serif", color: '#1a1040' }}>{score} dewdrops collected</p>
-              <button
-                onClick={handleRestart}
-                className="px-6 py-3 rounded-[14px] text-sm transition-all hover:-translate-y-1"
-                style={{ fontFamily: "'Bungee', cursive", backgroundColor: '#69f0ae', boxShadow: '0 4px 0 0 #4cc08a', color: '#1a1040' }}
-              >
+              <button onClick={handleRestart} className="y2k-btn" style={{ backgroundColor: '#69f0ae', boxShadow: '0 4px 0 0 #4cc08a', color: '#1a1040' }}>
                 Play Again
               </button>
             </div>
