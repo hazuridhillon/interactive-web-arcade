@@ -156,89 +156,31 @@ All colors MUST be HSL.
     background: var(--gradient-sage);
   }
 
-  /* ===== Y2K GLAMOUR STYLES ===== */
+  /* ===== Y2K EDITORIAL STYLES ===== */
 
   .y2k-bg {
-    background: linear-gradient(135deg, #1a0a1a 0%, #2d0a2d 30%, #1a0a2a 60%, #0d0515 100%);
+    background: #0c0a10;
   }
 
-  .y2k-chrome-bar {
-    background: linear-gradient(180deg, #ff69b4 0%, #ff1493 50%, #c71585 100%);
-    border-bottom: 3px solid #ffb6c1;
-    box-shadow: 0 4px 20px rgba(255, 20, 147, 0.5);
+  .y2k-gradient-text {
+    background: linear-gradient(135deg, #ff69b4, #c084fc, #22d3ee);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
-  .y2k-title {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 800;
-    color: white;
-    text-shadow:
-      0 0 10px rgba(255, 255, 255, 0.8),
-      0 0 30px rgba(255, 105, 180, 0.6),
-      0 0 60px rgba(255, 20, 147, 0.4);
-    letter-spacing: 0.15em;
-  }
-
-  .y2k-subtitle-banner {
-    background: linear-gradient(90deg, transparent, rgba(255, 105, 180, 0.2), transparent);
-    color: #ffb6c1;
-    border-top: 1px solid rgba(255, 182, 193, 0.2);
-    border-bottom: 1px solid rgba(255, 182, 193, 0.2);
-  }
-
-  .y2k-card {
-    background: linear-gradient(145deg, rgba(255, 20, 147, 0.35), rgba(139, 0, 139, 0.3));
-    border: 2px solid rgba(255, 105, 180, 0.4);
+  .y2k-game-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: 1rem;
-    backdrop-filter: blur(12px);
-    box-shadow:
-      0 8px 32px rgba(255, 20, 147, 0.2),
-      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
   }
 
-  .y2k-card-hover {
-    border-color: rgba(255, 182, 193, 0.8);
-    box-shadow:
-      0 8px 40px rgba(255, 20, 147, 0.5),
-      0 0 20px rgba(255, 105, 180, 0.3),
-      inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    transform: translateY(-4px) scale(1.03);
-  }
-
-  .y2k-gloss {
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, transparent 50%);
-  }
-
-  .y2k-sparkle {
-    animation: y2k-sparkle-anim 1.5s ease-in-out infinite;
-  }
-
-  .y2k-float {
-    animation: y2k-float-anim 4s ease-in-out infinite;
-  }
-
-  .y2k-pulse {
-    animation: y2k-pulse-anim 1.2s ease-in-out infinite;
-  }
-
-  .y2k-bottom-strip {
-    background: linear-gradient(180deg, transparent, rgba(255, 20, 147, 0.15));
-    border-top: 1px solid rgba(255, 105, 180, 0.15);
-  }
-
-  @keyframes y2k-sparkle-anim {
-    0%, 100% { opacity: 0.4; transform: scale(0.8) rotate(0deg); }
-    50% { opacity: 1; transform: scale(1.2) rotate(180deg); }
-  }
-
-  @keyframes y2k-float-anim {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
-  }
-
-  @keyframes y2k-pulse-anim {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
+  .y2k-game-card:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.12);
+    transform: translateY(-2px);
+    box-shadow: 0 20px 60px -15px rgba(0, 0, 0, 0.5);
   }
 
   /* ===== EXISTING GAME ANIMATIONS ===== */
