@@ -1,4 +1,9 @@
-import { Button } from '@/components/ui/button';
+/**
+ * DifficultySelector.tsx — A shared full-screen picker for game difficulty.
+ * Used by Memory and Battle games before gameplay starts.
+ * Shows three vivid buttons (Easy/Medium/Hard) with custom descriptions.
+ */
+
 import { Trophy, Target, Flame, ArrowLeft } from 'lucide-react';
 
 interface DifficultySelectorProps {
@@ -26,6 +31,7 @@ export const DifficultySelector = ({
           How brave are you feeling?
         </p>
         
+        {/* Difficulty buttons — each has its own color */}
         <div className="flex flex-col gap-4">
           <button
             onClick={() => onSelect('easy')}
@@ -64,6 +70,7 @@ export const DifficultySelector = ({
           </button>
         </div>
         
+        {/* Back button */}
         <button
           onClick={onCancel}
           className="w-full mt-4 flex items-center justify-center gap-2 py-2 text-sm transition-all hover:opacity-70"

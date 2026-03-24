@@ -1,3 +1,9 @@
+/**
+ * GemMatchGame.tsx — A match-3 gem puzzle (click-to-swap version).
+ * Click two adjacent gems to swap them and match 3+ in a row/column.
+ * Features combo scoring — consecutive matches multiply points.
+ */
+
 import { useState, useEffect, useCallback } from 'react';
 import { X, Sparkles, Diamond } from 'lucide-react';
 

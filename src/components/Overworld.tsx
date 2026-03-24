@@ -1,11 +1,20 @@
+/**
+ * Overworld.tsx — The game hub / selection screen.
+ * Shows a grid of game cards. Clicking one launches that game full-screen.
+ * When a game calls onClose, we return to this hub.
+ */
+
 import { useState, useCallback } from "react";
 import { SnakeGame } from "./games/SnakeGame";
-import { Match3Game } from "./games/Match3GameEnhanced";
+import { Match3Game } from "./games/Match3Game";
 import { WordleGame } from "./games/WordleGame";
 import { MemoryGame } from "./games/MemoryGame";
 import { GemMatchGame } from "./games/GemMatchGame";
-import { BattleGame } from "./games/BattleGameEnhanced";
+import { BattleGame } from "./games/BattleGame";
 import { Sparkles, Grid3X3, BookOpen, Layers, Diamond, Swords, Star } from "lucide-react";
+
+/* ---------- Game definitions ---------- */
+// Each entry maps an id to its display info and colors.
 
 interface GameDef {
   id: string;
@@ -26,11 +35,15 @@ const GAMES: GameDef[] = [
   { id: "battle", name: "Battle", subtitle: "Enchanted Duel", icon: <Swords size={22} strokeWidth={2.5} />, color: "#ff8a65", shadowColor: "#cc6e50" },
 ];
 
+/* ---------- Component ---------- */
+
 export const Overworld = () => {
+  // Which game is currently open (null = show hub)
   const [activeGame, setActiveGame] = useState<string | null>(null);
 
   const handleCloseGame = useCallback(() => setActiveGame(null), []);
 
+  // If a game is active, render it full-screen instead of the hub
   if (activeGame === "snake") return <SnakeGame onClose={handleCloseGame} />;
   if (activeGame === "match3") return <Match3Game onClose={handleCloseGame} />;
   if (activeGame === "wordle") return <WordleGame onClose={handleCloseGame} />;
@@ -38,9 +51,10 @@ export const Overworld = () => {
   if (activeGame === "gems") return <GemMatchGame onClose={handleCloseGame} />;
   if (activeGame === "battle") return <BattleGame onClose={handleCloseGame} />;
 
+  // Hub layout
   return (
     <div className="y2k-lavender-bg min-h-screen flex flex-col items-center relative overflow-hidden">
-      {/* Header */}
+      {/* Header — title and decorative star divider */}
       <header className="w-full max-w-3xl mx-auto pt-14 pb-6 px-6 text-center">
         <p
           className="text-[10px] uppercase tracking-[0.45em] mb-4"
@@ -60,7 +74,7 @@ export const Overworld = () => {
         </div>
       </header>
 
-      {/* Game grid */}
+      {/* Game grid — 2 columns on mobile, 3 on desktop */}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-5 p-6 max-w-3xl w-full">
         {GAMES.map((game) => (
           <button
@@ -73,12 +87,12 @@ export const Overworld = () => {
               borderRadius: "22px",
             }}
           >
-            {/* Icon box */}
+            {/* Frosted icon box */}
             <div className="mb-3 p-2 rounded-xl bg-white/40 backdrop-blur-sm">
               <span style={{ color: "#1a1040" }}>{game.icon}</span>
             </div>
 
-            {/* Title */}
+            {/* Game name and subtitle */}
             <h3
               className="text-lg md:text-xl leading-tight mb-1"
               style={{ fontFamily: "'Bungee', cursive", color: "#1a1040" }}
@@ -92,7 +106,7 @@ export const Overworld = () => {
               {game.subtitle}
             </p>
 
-            {/* NEW badge */}
+            {/* "NEW" badge — only shown for games marked isNew */}
             {game.isNew && (
               <span className="y2k-new-badge">
                 NEW

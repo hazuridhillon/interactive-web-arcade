@@ -1,3 +1,9 @@
+/**
+ * WordleGame.tsx — A 5-letter word guessing game (like Wordle).
+ * Player has 6 attempts to guess the target word.
+ * Tiles turn green (correct), yellow (wrong position), or grey (not in word).
+ */
+
 import { useState, useEffect } from 'react';
 import { X, BookOpen } from 'lucide-react';
 
