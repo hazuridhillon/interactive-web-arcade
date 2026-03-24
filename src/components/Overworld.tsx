@@ -5,30 +5,27 @@ import { WordleGame } from "./games/WordleGame";
 import { MemoryGame } from "./games/MemoryGame";
 import { GemMatchGame } from "./games/GemMatchGame";
 import { BattleGame } from "./games/BattleGameEnhanced";
+import { Sparkles, Grid3X3, BookOpen, Layers, Diamond, Swords } from "lucide-react";
 
 interface GameDef {
   id: string;
   name: string;
-  emoji: string;
-  gradient: string;
+  subtitle: string;
+  icon: React.ReactNode;
+  accentColor: string;
 }
 
 const GAMES: GameDef[] = [
-  { id: "snake", name: "Snake", emoji: "🐍", gradient: "from-pink-500 to-fuchsia-500" },
-  { id: "match3", name: "Tile Match", emoji: "✨", gradient: "from-fuchsia-500 to-purple-500" },
-  { id: "wordle", name: "Wordle", emoji: "📖", gradient: "from-violet-500 to-indigo-400" },
-  { id: "memory", name: "Memory", emoji: "🦋", gradient: "from-rose-400 to-pink-500" },
-  { id: "gems", name: "Gem Match", emoji: "💎", gradient: "from-cyan-400 to-fuchsia-500" },
-  { id: "battle", name: "Battle", emoji: "⚔️", gradient: "from-amber-400 to-pink-500" },
+  { id: "snake", name: "Snake", subtitle: "Secret Garden", icon: <Sparkles size={28} />, accentColor: "#4ade80" },
+  { id: "match3", name: "Tile Match", subtitle: "Moroccan Court", icon: <Grid3X3 size={28} />, accentColor: "#c084fc" },
+  { id: "wordle", name: "Wordle", subtitle: "Library Nook", icon: <BookOpen size={28} />, accentColor: "#fbbf24" },
+  { id: "memory", name: "Memory", subtitle: "Botanical", icon: <Layers size={28} />, accentColor: "#f472b6" },
+  { id: "gems", name: "Gem Match", subtitle: "Crystal Cave", icon: <Diamond size={28} />, accentColor: "#22d3ee" },
+  { id: "battle", name: "Battle", subtitle: "Enchanted Duel", icon: <Swords size={28} />, accentColor: "#fb923c" },
 ];
-
-const StarDecoration = ({ className = "" }: { className?: string }) => (
-  <span className={`y2k-sparkle absolute pointer-events-none text-lg ${className}`}>✦</span>
-);
 
 export const Overworld = () => {
   const [activeGame, setActiveGame] = useState<string | null>(null);
-  const [hoveredGame, setHoveredGame] = useState<string | null>(null);
 
   const handleCloseGame = useCallback(() => setActiveGame(null), []);
 
@@ -40,87 +37,78 @@ export const Overworld = () => {
   if (activeGame === "battle") return <BattleGame onClose={handleCloseGame} />;
 
   return (
-    <div className="y2k-bg min-h-screen flex flex-col items-center overflow-hidden relative">
-      {/* Floating sparkles */}
-      <StarDecoration className="top-[5%] left-[10%] text-pink-300" />
-      <StarDecoration className="top-[12%] right-[15%] text-fuchsia-300 text-2xl" />
-      <StarDecoration className="top-[30%] left-[5%] text-yellow-300" />
-      <StarDecoration className="bottom-[20%] right-[8%] text-pink-200 text-xl" />
-      <StarDecoration className="top-[50%] left-[3%] text-cyan-300" />
-      <StarDecoration className="bottom-[40%] right-[4%] text-fuchsia-200 text-2xl" />
-      <StarDecoration className="top-[70%] left-[12%] text-yellow-200" />
-      <StarDecoration className="top-[8%] left-[50%] text-pink-400" />
+    <div className="y2k-bg min-h-screen flex flex-col items-center relative overflow-hidden">
+      {/* Ambient glow orbs */}
+      <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-fuchsia-600/10 blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] rounded-full bg-violet-600/10 blur-[100px] pointer-events-none" />
 
-      {/* Floating hearts */}
-      <span className="y2k-float absolute top-[15%] right-[20%] text-3xl pointer-events-none opacity-40">💖</span>
-      <span className="y2k-float absolute bottom-[25%] left-[8%] text-2xl pointer-events-none opacity-30" style={{ animationDelay: "1s" }}>💗</span>
-      <span className="y2k-float absolute top-[60%] right-[12%] text-xl pointer-events-none opacity-30" style={{ animationDelay: "2s" }}>💕</span>
-
-      {/* Chrome header bar */}
-      <div className="w-full y2k-chrome-bar py-3 px-6 flex items-center justify-center gap-3 z-10">
-        <span className="text-2xl">⭐</span>
-        <h1 className="y2k-title text-3xl md:text-5xl tracking-wide">
-          GAME ZONE
-        </h1>
-        <span className="text-2xl">⭐</span>
-      </div>
-
-      {/* Subtitle banner */}
-      <div className="y2k-subtitle-banner mt-4 mb-6 px-8 py-2">
-        <p className="text-xs md:text-sm tracking-widest uppercase" style={{ fontFamily: "'Poppins', sans-serif" }}>
-          ✨ Pick a game & play, babe ✨
+      {/* Header */}
+      <header className="w-full max-w-4xl mx-auto pt-16 pb-8 px-6 text-center">
+        <p className="text-[11px] uppercase tracking-[0.4em] text-pink-400/60 mb-3" style={{ fontFamily: "'Poppins', sans-serif" }}>
+          Select your world
         </p>
-      </div>
+        <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-white" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 700 }}>
+          GAME <span className="y2k-gradient-text">ZONE</span>
+        </h1>
+        <div className="mt-4 mx-auto w-16 h-[2px] bg-gradient-to-r from-transparent via-pink-500 to-transparent" />
+      </header>
 
       {/* Game grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-5 p-6 max-w-3xl w-full mx-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 p-6 max-w-3xl w-full">
         {GAMES.map((game) => (
           <button
             key={game.id}
             onClick={() => setActiveGame(game.id)}
-            onMouseEnter={() => setHoveredGame(game.id)}
-            onMouseLeave={() => setHoveredGame(null)}
-            className={`y2k-card group relative flex flex-col items-center justify-center gap-3 py-8 px-4 cursor-pointer transition-all duration-200 ${
-              hoveredGame === game.id ? "y2k-card-hover" : ""
-            }`}
+            className="y2k-game-card group relative flex flex-col items-start p-5 text-left cursor-pointer transition-all duration-300"
           >
-            {/* Gloss overlay */}
-            <div className="absolute inset-0 y2k-gloss rounded-2xl pointer-events-none" />
-
-            {/* Emoji icon */}
-            <span className="text-4xl md:text-5xl drop-shadow-lg group-hover:scale-110 transition-transform duration-200">
-              {game.emoji}
-            </span>
-
-            {/* Game name */}
-            <span
-              className="text-sm md:text-base font-bold tracking-wide text-white drop-shadow-md"
-              style={{ fontFamily: "'Poppins', sans-serif" }}
+            {/* Icon */}
+            <div
+              className="mb-4 p-2.5 rounded-xl transition-all duration-300 group-hover:scale-110"
+              style={{
+                color: game.accentColor,
+                background: `${game.accentColor}15`,
+                boxShadow: `0 0 0px ${game.accentColor}00`,
+              }}
             >
+              {game.icon}
+            </div>
+
+            {/* Text */}
+            <h3 className="text-base font-semibold text-white/90 tracking-wide mb-0.5" style={{ fontFamily: "'Poppins', sans-serif" }}>
               {game.name}
+            </h3>
+            <p className="text-[10px] uppercase tracking-[0.2em] text-white/30" style={{ fontFamily: "'Poppins', sans-serif" }}>
+              {game.subtitle}
+            </p>
+
+            {/* Hover arrow */}
+            <span className="absolute bottom-4 right-4 text-white/0 group-hover:text-white/40 transition-all duration-300 text-lg">
+              →
             </span>
 
-            {/* Sparkle on hover */}
-            {hoveredGame === game.id && (
-              <span className="absolute -top-2 -right-2 text-yellow-300 text-xl y2k-sparkle">✦</span>
-            )}
-
-            {/* NEW badge on one game */}
+            {/* NEW tag */}
             {game.id === "match3" && (
-              <span className="absolute -top-2 -left-2 bg-yellow-400 text-pink-700 text-[10px] font-black px-2 py-0.5 rounded-full shadow-md y2k-pulse" style={{ fontFamily: "'Poppins', sans-serif" }}>
-                NEW!
+              <span
+                className="absolute top-3 right-3 text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full"
+                style={{
+                  background: game.accentColor,
+                  color: "#000",
+                  fontFamily: "'Poppins', sans-serif",
+                }}
+              >
+                New
               </span>
             )}
           </button>
         ))}
       </div>
 
-      {/* Bottom decorative strip */}
-      <div className="mt-auto w-full y2k-bottom-strip py-3 flex items-center justify-center gap-2">
-        <span className="text-pink-300 text-xs" style={{ fontFamily: "'Poppins', sans-serif" }}>
-          💖 made with love 💖
-        </span>
-      </div>
+      {/* Footer */}
+      <footer className="mt-auto pb-6 text-center">
+        <p className="text-[10px] text-white/20 tracking-widest uppercase" style={{ fontFamily: "'Poppins', sans-serif" }}>
+          made with love
+        </p>
+      </footer>
     </div>
   );
 };
