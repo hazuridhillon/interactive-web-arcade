@@ -2,125 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
-
+/* Minimal design tokens — only what shadcn primitives (toast, button) need */
 @layer base {
   :root {
-    /* Glossier aesthetic - soft, dreamy colors */
-    --background: 16 100% 97%; /* Cream #FFF4F0 */
-    --foreground: 340 30% 40%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 340 30% 40%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 340 30% 40%;
-
-    /* Blush pink primary */
-    --primary: 349 100% 85%; /* #FFB3C6 */
-    --primary-foreground: 340 30% 40%;
-    --primary-glow: 350 100% 88%; /* lighter pink */
-
-    /* Soft peach secondary */
-    --secondary: 28 100% 87%; /* #FFDAB9 */
-    --secondary-foreground: 340 30% 40%;
-
-    /* Lavender muted */
-    --muted: 240 67% 94%; /* #E6E6FA */
+    --background: 0 0% 100%;
+    --foreground: 260 40% 13%;
+    --primary: 349 100% 85%;
+    --primary-foreground: 260 40% 13%;
+    --secondary: 28 100% 87%;
+    --secondary-foreground: 260 40% 13%;
+    --muted: 240 67% 94%;
     --muted-foreground: 340 20% 50%;
-
-    /* Sage green accent */
-    --accent: 82 26% 77%; /* #C9D5B5 */
-    --accent-foreground: 340 30% 40%;
-    
-    /* Rose mauve */
-    --rose-mauve: 0 17% 63%; /* #B88B8B */
-    --rose-mauve-foreground: 0 0% 100%;
-
-    --destructive: 0 84.2% 60.2%;
+    --accent: 82 26% 77%;
+    --accent-foreground: 260 40% 13%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
-
     --border: 349 100% 90%;
     --input: 349 100% 90%;
     --ring: 349 100% 85%;
-
     --radius: 1rem;
-    
-    /* Custom gradient tokens */
-    --gradient-dreamy: linear-gradient(135deg, hsl(349 100% 85%), hsl(350 100% 88%), hsl(240 67% 94%));
-    --gradient-peach: linear-gradient(135deg, hsl(28 100% 87%), hsl(349 100% 85%));
-    --gradient-sage: linear-gradient(135deg, hsl(82 26% 77%), hsl(240 67% 94%));
-    --gradient-garden: linear-gradient(135deg, hsl(82 26% 77%), hsl(120 20% 85%), hsl(100 25% 80%));
-    --gradient-caterpillar: linear-gradient(135deg, hsl(82 26% 77%), hsl(120 30% 70%), hsl(82 26% 77%));
-    
-    /* Shadows with soft glow */
-    --shadow-soft: 0 8px 32px -8px hsl(349 100% 85% / 0.3);
-    --shadow-glow: 0 0 40px hsl(349 100% 85% / 0.4);
-    
-    /* Transitions */
-    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --card: 0 0% 100%;
+    --card-foreground: 260 40% 13%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 260 40% 13%;
   }
 
-  .dark {
-    --background: 340 30% 15%;
-    --foreground: 16 100% 97%;
-
-    --card: 340 30% 18%;
-    --card-foreground: 16 100% 97%;
-
-    --popover: 340 30% 18%;
-    --popover-foreground: 16 100% 97%;
-
-    --primary: 349 100% 75%;
-    --primary-foreground: 340 30% 15%;
-    --primary-glow: 350 100% 80%;
-
-    --secondary: 28 100% 77%;
-    --secondary-foreground: 340 30% 15%;
-
-    --muted: 240 30% 25%;
-    --muted-foreground: 240 20% 70%;
-
-    --accent: 82 26% 67%;
-    --accent-foreground: 340 30% 15%;
-
-    --destructive: 0 62.8% 50.6%;
-    --destructive-foreground: 16 100% 97%;
-
-    --border: 340 30% 25%;
-    --input: 340 30% 25%;
-    --ring: 349 100% 75%;
-    
-    --sidebar-background: 340 30% 15%;
-    --sidebar-foreground: 16 100% 97%;
-    --sidebar-primary: 349 100% 75%;
-    --sidebar-primary-foreground: 340 30% 15%;
-    --sidebar-accent: 340 30% 20%;
-    --sidebar-accent-foreground: 16 100% 97%;
-    --sidebar-border: 340 30% 25%;
-    --sidebar-ring: 349 100% 75%;
-  }
-}
-
-@layer base {
   * {
     @apply border-border;
   }
@@ -132,30 +38,6 @@ All colors MUST be HSL.
 }
 
 @layer utilities {
-  .glass-effect {
-    @apply bg-white/30 backdrop-blur-xl border border-white/40;
-  }
-  
-  .glow-soft {
-    box-shadow: var(--shadow-soft);
-  }
-  
-  .glow-strong {
-    box-shadow: var(--shadow-glow);
-  }
-  
-  .gradient-dreamy {
-    background: var(--gradient-dreamy);
-  }
-  
-  .gradient-peach {
-    background: var(--gradient-peach);
-  }
-  
-  .gradient-sage {
-    background: var(--gradient-sage);
-  }
-
   /* ===== Y2K GIRLY ARCADE ===== */
 
   .y2k-lavender-bg {
@@ -169,11 +51,9 @@ All colors MUST be HSL.
     cursor: pointer;
     transition: transform 0.15s ease, box-shadow 0.15s ease;
   }
-
   .y2k-vivid-card:hover {
     transform: translateY(-4px);
   }
-
   .y2k-vivid-card:active {
     transform: translateY(2px);
     box-shadow: 0 2px 0 0 currentColor !important;
@@ -197,46 +77,29 @@ All colors MUST be HSL.
     50% { transform: scale(1.1); }
   }
 
-  /* ===== EXISTING GAME ANIMATIONS ===== */
-  
-  @keyframes float-slow {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-20px); }
+  /* Shared Y2K button style for Play Again / Back buttons */
+  .y2k-btn {
+    font-family: 'Bungee', cursive;
+    padding: 12px 20px;
+    border-radius: 14px;
+    font-size: 14px;
+    transition: transform 0.15s ease;
+    cursor: pointer;
+    border: none;
   }
-  
-  @keyframes float-slower {
-    0%, 100% { transform: translateY(0px) translateX(0px); }
-    50% { transform: translateY(-15px) translateX(10px); }
+  .y2k-btn:hover {
+    transform: translateY(-4px);
   }
-  
-  @keyframes twinkle {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.3; transform: scale(0.8); }
-  }
-  
-  @keyframes breathing {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.02); }
-  }
-  
-  @keyframes blink {
-    0%, 90%, 100% { transform: scaleY(1); }
-    95% { transform: scaleY(0.1); }
-  }
-  
-  .animate-float-slow { animation: float-slow 8s ease-in-out infinite; }
-  .animate-float-slower { animation: float-slower 10s ease-in-out infinite; }
-  .animate-twinkle { animation: twinkle 3s ease-in-out infinite; }
-  .animate-breathing { animation: breathing 3s ease-in-out infinite; }
-  .animate-blink { animation: blink 4s ease-in-out infinite; }
-  
+
+  /* ===== BATTLE ANIMATIONS ===== */
+
   @keyframes shake {
     0%, 100% { transform: translateX(0); }
     10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
     20%, 40%, 60%, 80% { transform: translateX(5px); }
   }
   .animate-shake { animation: shake 0.5s ease-in-out; }
-  
+
   @keyframes attack-forward {
     0%, 100% { transform: translateX(0); }
     50% { transform: translateX(50px) scale(1.1); }
@@ -247,7 +110,7 @@ All colors MUST be HSL.
   }
   .animate-attack-forward { animation: attack-forward 0.5s ease-in-out; }
   .animate-attack-backward { animation: attack-backward 0.5s ease-in-out; }
-  
+
   @keyframes damage-float {
     0% { opacity: 1; transform: translateY(0) scale(1); }
     100% { opacity: 0; transform: translateY(-50px) scale(1.5); }
