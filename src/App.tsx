@@ -1,34 +1,18 @@
 /**
- * App.tsx — The root component of the application.
- * Sets up global providers (React Query, tooltips, toasts) and defines routes.
+ * App.tsx — Root component. Just a router with two pages.
  */
 
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
+import { Overworld } from "./components/Overworld";
 import NotFound from "./pages/NotFound";
 
-// React Query client for data fetching (not heavily used yet)
-const queryClient = new QueryClient();
-
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      {/* Toast notification renderers */}
-      <Toaster />
-      <Sonner />
-      {/* Client-side routing */}
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+  <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Overworld />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  </BrowserRouter>
 );
 
 export default App;
