@@ -3,20 +3,14 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 260 40% 13%;
-  }
-
   body {
-    @apply bg-background text-foreground;
+    background: #fff;
+    color: hsl(260, 40%, 13%);
     font-family: 'Poppins', sans-serif;
   }
 }
 
 @layer utilities {
-  /* ===== Y2K GIRLY ARCADE ===== */
-
   .y2k-lavender-bg {
     background-color: #f0d6ff;
     background-image: radial-gradient(circle, #d8b4fe33 1px, transparent 1px);
@@ -54,7 +48,6 @@
     50% { transform: scale(1.1); }
   }
 
-  /* Shared Y2K button style for Play Again / Back buttons */
   .y2k-btn {
     font-family: 'Bungee', cursive;
     padding: 12px 20px;
@@ -67,8 +60,6 @@
   .y2k-btn:hover {
     transform: translateY(-4px);
   }
-
-  /* ===== BATTLE ANIMATIONS ===== */
 
   @keyframes shake {
     0%, 100% { transform: translateX(0); }
