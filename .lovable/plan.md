@@ -1,60 +1,68 @@
 
 
-# Final Simplification — Remove All Dead Weight
+# Final Cleanup — Strip Remaining Scaffolding
 
 ## What I found
 
-The codebase still has significant dead code:
+The code itself is clean, but there's a massive layer of unused infrastructure surrounding it:
 
-1. **Toast system is never used.** No game or component calls `toast()`. The entire toast infrastructure (`toaster.tsx`, `toast.tsx`, `sonner.tsx`, `use-toast.ts`) exists but does nothing.
-2. **Sonner imports `next-themes`** which isn't even installed — it would crash if ever called.
-3. **Button component (`button.tsx`)** is imported by nobody.
-4. **Tooltip component (`tooltip.tsx`)** is only imported by `App.tsx` to wrap `TooltipProvider` — but nothing inside uses tooltips.
-5. **React Query** (`QueryClientProvider`) wraps the app but nothing uses `useQuery`.
-6. **`use-mobile.tsx` hook** is never imported.
-7. **`lib/utils.ts`** (`cn()`) is only used by the dead UI components above.
-8. **`Index.tsx`** is a pointless wrapper — it just renders `<Overworld />`.
-9. **`NotFound.tsx`** uses CSS variables from the old design system (`bg-muted`, `text-primary`) but these could be replaced with inline styles for consistency.
-10. **CSS variables** — most `:root` vars only exist to serve the dead toast/button components. Only `--background`, `--foreground`, and `border-border` are used by the body/base styles.
+### 1. `package.json` has ~35 unused dependencies
+The app only uses `react`, `react-dom`, `react-router-dom`, and `lucide-react`. Everything else is dead weight from the original shadcn scaffold:
+- All `@radix-ui/*` packages (accordion, dialog, toast, tooltip, etc.)
+- `@tanstack/react-query`, `@hookform/resolvers`, `react-hook-form`, `zod`
+- `class-variance-authority`, `clsx`, `tailwind-merge` (the `cn()` utility stack)
+- `cmdk`, `date-fns`, `embla-carousel-react`, `input-otp`, `recharts`
+- `next-themes`, `sonner`, `vaul`, `react-day-picker`, `react-resizable-panels`
+
+### 2. `tailwind.config.ts` is full of dead config
+- All the shadcn color tokens (`border`, `input`, `ring`, `primary`, `secondary`, `destructive`, `muted`, `accent`, `rose-mauve`, `popover`, `card`, `sidebar`) — none are used
+- `darkMode: ["class"]` — no dark mode
+- `container` config — never used
+- All keyframes (`accordion-down/up`, `float`, `bounce-subtle`, `glow-pulse`, `shimmer`, `blob`) — none of these class names appear in any component
+- `borderRadius` lg/md/sm with `--radius` var — never used
+- `tailwindcss-animate` plugin — the actual animations used are defined in `index.css`, not via this plugin
+
+The config should only define `background`/`foreground` colors (used by body via CSS vars) and the `sans` font family.
+
+### 3. `index.css` — CSS vars can be replaced with direct values
+The `--background` and `--foreground` vars only exist to serve the Tailwind `bg-background text-foreground` classes on `body`. Replace with direct CSS: `background: #fff; color: hsl(260, 40%, 13%)`. Then remove the vars entirely.
+
+### 4. `NotFound.tsx` — inline the `useEffect` console.error
+The `useEffect` logging a 404 to console is unnecessary noise — users won't see it, and it doesn't serve a purpose. Remove it, simplifying the component to pure JSX with no hooks.
+
+### 5. `pages/` folder — unnecessary nesting
+`NotFound.tsx` is the only file in `pages/`. Move it to `src/components/NotFound.tsx` and delete the folder, making the structure truly flat.
 
 ## Changes
 
-### 1. Delete dead files
-- `src/components/ui/button.tsx` — never imported
-- `src/components/ui/toast.tsx` — never used
-- `src/components/ui/toaster.tsx` — never used
-- `src/components/ui/sonner.tsx` — never used, broken import
-- `src/components/ui/tooltip.tsx` — nothing uses tooltips
-- `src/hooks/use-toast.ts` — never used
-- `src/hooks/use-mobile.tsx` — never imported
-- `src/lib/utils.ts` — `cn()` only used by deleted UI files
-- `src/pages/Index.tsx` — inline `<Overworld />` directly in App
+### 1. Gut `package.json` dependencies
+Remove all unused packages. Keep only: `react`, `react-dom`, `react-router-dom`, `lucide-react`.
 
-### 2. Simplify `App.tsx`
-Strip out QueryClientProvider, TooltipProvider, Toaster, Sonner. The app becomes just BrowserRouter with two routes. Remove all dead imports.
+### 2. Simplify `tailwind.config.ts`
+Strip down to just the font family override. Remove all shadcn color tokens, dead keyframes, dark mode, container, border radius, and the `tailwindcss-animate` plugin.
 
-### 3. Trim `index.css`
-Remove all CSS variables except `--background` and `--foreground` (used by `body`). Remove `border-border` base rule (nothing uses borders via Tailwind). Keep only the Y2K utilities and battle animations.
+### 3. Replace CSS vars with direct styles in `index.css`
+Remove the `:root` block. Set body background and color directly. The rest of the file (Y2K classes, battle animations) stays.
 
-### 4. Style `NotFound.tsx` with inline/Y2K styles
-Replace `bg-muted`, `text-muted-foreground`, `text-primary` (which depend on deleted CSS vars) with direct colors matching the Y2K theme.
+### 4. Simplify `NotFound.tsx`
+Remove `useEffect` and `useLocation` — just render the 404 UI. Move from `src/pages/` to `src/components/`.
 
-### 5. Delete empty directories
-- `src/components/ui/` — all files removed
-- `src/hooks/` — all files removed
-- `src/lib/` — all files removed
+### 5. Update `App.tsx` import path
+Point to new `NotFound` location.
 
-## Final file structure
+### 6. Remove `components.json`
+This is shadcn CLI config — no longer relevant since all shadcn components are deleted.
+
+## Final structure (unchanged from before, just flatter)
 ```text
 src/
-  App.tsx                — BrowserRouter + 2 routes
-  main.tsx               — React entry point
-  index.css              — Y2K styles only
+  App.tsx
+  main.tsx
+  index.css
   vite-env.d.ts
-  pages/
-    NotFound.tsx          — 404 page (Y2K styled)
   components/
-    Overworld.tsx         — game hub
+    Overworld.tsx
+    NotFound.tsx
     DifficultySelector.tsx
     GameHeader.tsx
     GameOverModal.tsx
@@ -66,6 +74,4 @@ src/
       GemMatchGame.tsx
       BattleGame.tsx
 ```
-
-~10 files deleted, 3 files simplified. Zero functionality or visual changes.
 
