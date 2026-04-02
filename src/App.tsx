@@ -1,10 +1,6 @@
-/**
- * App.tsx — Root component. Just a router with two pages.
- */
-
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Overworld } from "./components/Overworld";
-import NotFound from "./pages/NotFound";
+import NotFound from "./components/NotFound";
 
 const App = () => (
   <BrowserRouter>
